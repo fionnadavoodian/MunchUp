@@ -13,8 +13,8 @@ const TopNav = () => {
                 <div onClick={() => setSideNav(!sideNav)} className='cursor-pointer'>
                     <AiOutlineMenu size={25} />
                 </div>
-                <h1 className='text-2xl sm:text-3xl lg:text-4xl px-2'>Dine
-                    <span className='font-bold'>Dash</span>
+                <h1 className='text-2xl sm:text-3xl lg:text-4xl px-2'>Munch
+                    <span className='font-bold'>Up</span>
                 </h1>
                 <div className='hidden lg:flex items-center bg-gray-200 rounded-full p-1 text-[14px]'>
                     <p className='bg-orange-700 text-white rounded-full p-2 text-bold'>Free</p>
@@ -43,7 +43,7 @@ const TopNav = () => {
             }
             >
                 <AiOutlineClose onClick={() => setSideNav(!sideNav)} size={25} className='absolute right-4 top-4 cursor-pointer' />
-                <h2 className='text-2xl p-4'>Dine <span className='text-orange-700 font-bold'>Dash</span></h2>
+                <h2 className='text-2xl p-4'>Munch <span className='text-orange-700 font-bold'>Up</span></h2>
                 <nav>
                     <ul className='flex flex-col p-4 text-grey-900'>
                         <li className='text-xl py-4 flex'>

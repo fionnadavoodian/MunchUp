@@ -6,7 +6,7 @@ const Footer = () => {
         <div className='max-w-[1520px] mx-auto px-4 py-10 bg-[#24262b] text-gray-300'>
             <div className='grid lg:grid-cols-3 gap-8'>
                 <div>
-                    <h1 className='text-3xl font-bold text-orange-500 mb-4'>DineDash</h1>
+                    <h1 className='text-3xl font-bold text-orange-500 mb-4'>MunchUp</h1>
                     <p className='mb-4'>
                         Labore culpa duis adipisicing consequat irure incididunt dolor aliquip. Aliqua veniam quis ex officia fugiat nulla esse occaecat irure et nulla dolor. Eiusmod sunt est exercitation ipsum ut et tempor sunt occaecat cillum officia enim duis veniam. Do enim laborum officia amet dolore dolore mollit culpa.
                     </p>
@@ -50,7 +50,7 @@ const Footer = () => {
             </div>
             <div className='border-t border-gray-600 mt-8 pt-8 text-center'>
                 <p className='text-sm text-[#9b9b9b]'>
-                    &copy; 2024 DineDash. All rights reserved.
+                    &copy; 2024 MunchUp. All rights reserved.
                 </p>
             </div>
         </div>

@@ -5,7 +5,15 @@ import { motion, useAnimation } from 'framer-motion';
 const Reviews = () => {
     const containerRef = useRef(null);
     const controls = useAnimation();
+    const [scrollOffset, setScrollOffset] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
+
+    // Update scroll offset
+    const updateScrollOffset = () => {
+        if (containerRef.current) {
+            setScrollOffset(containerRef.current.scrollLeft);
+        }
+    };
 
     // Handle hover events
     const handleMouseEnter = () => {
@@ -17,9 +25,8 @@ const Reviews = () => {
         setIsPaused(false);
         const container = containerRef.current;
         if (container) {
-            // Resume scrolling animation from the current scroll position
             controls.start({
-                x: [`-${container.scrollLeft}px`, `-${container.scrollWidth - container.clientWidth}px`],
+                x: [`-${scrollOffset}px`, `-${container.scrollWidth - container.clientWidth}px`],
                 transition: { duration: 30, ease: 'linear', repeat: Infinity },
             });
         }
@@ -30,22 +37,28 @@ const Reviews = () => {
         const container = containerRef.current;
         if (container) {
             controls.start({
-                x: [`-${container.scrollLeft}px`, `-${container.scrollWidth - container.clientWidth}px`],
+                x: [`-${scrollOffset}px`, `-${container.scrollWidth - container.clientWidth}px`],
                 transition: { duration: 30, ease: 'linear', repeat: Infinity },
             });
+
+            // Update scroll offset on scroll
+            container.addEventListener('scroll', updateScrollOffset);
+            return () => {
+                container.removeEventListener('scroll', updateScrollOffset);
+            };
         }
-    }, [controls]);
+    }, [controls, scrollOffset]);
 
     return (
         <div className='py-10 m-auto bg-gray-100'>
             <h1 className='text-orange-500 font-bold text-3xl text-center mb-4'>Customer Reviews</h1>
-            <div className='relative'>
+            <div className='relative overflow-hidden'>
                 <motion.div
                     ref={containerRef}
                     className='flex space-x-6'
                     animate={controls}
                 >
-                    {reviewsData.map((review, index) => (
+                    {reviewsData.map((review) => (
                         <motion.div
                             key={review.id}
                             className='flex-none w-80 bg-white rounded-lg shadow-xl overflow-hidden transition-transform duration-300'
@@ -53,7 +66,7 @@ const Reviews = () => {
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <div className='m-auto  py-2 px-4'>
+                            <div className='m-auto py-2 px-4'>
                                 <div className='flex justify-between items-center p-2'>
                                     <img
                                         className='w-16 h-16 rounded-full border-4 border-orange-500 object-cover'
