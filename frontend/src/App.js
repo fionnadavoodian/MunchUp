@@ -6,6 +6,7 @@ import Meal from "./components/Meal";
 import Categories from "./components/Categories";
 import NewsLetter from "./components/NewsLetter";
 import Footer from "./components/Footer";
+import Reviews from "./components/Reviews";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <TopPicks />
       <Meal />
       <Categories />
+      <Reviews />
       <NewsLetter />
       <Footer />
     </div>
