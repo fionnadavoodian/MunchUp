@@ -5,69 +5,58 @@ import { motion, useAnimation } from 'framer-motion';
 const Reviews = () => {
     const containerRef = useRef(null);
     const controls = useAnimation();
-    const [scrollPosition, setScrollPosition] = useState(0);
-    const [hoveredIndex, setHoveredIndex] = useState(null);
-
-    // Function to update scroll position
-    const updateScrollPosition = () => {
-        if (containerRef.current) {
-            setScrollPosition(containerRef.current.scrollLeft);
-        }
-    };
-
-    // Start the scrolling animation when component mounts
-    useEffect(() => {
-        const container = containerRef.current;
-        if (container) {
-            controls.start({
-                x: [`-${scrollPosition}px`, `-${container.scrollWidth - container.clientWidth}px`],
-                transition: { duration: 30, ease: 'linear', repeat: Infinity },
-            });
-            container.addEventListener('scroll', updateScrollPosition);
-            return () => container.removeEventListener('scroll', updateScrollPosition);
-        }
-    }, [controls, scrollPosition]);
+    const [isPaused, setIsPaused] = useState(false);
 
     // Handle hover events
-    const handleMouseEnter = (index) => {
-        setHoveredIndex(index);
+    const handleMouseEnter = () => {
+        setIsPaused(true);
         controls.stop();
     };
 
     const handleMouseLeave = () => {
-        setHoveredIndex(null);
-        controls.start({
-            x: [`-${scrollPosition}px`, `-${containerRef.current.scrollWidth - containerRef.current.clientWidth}px`],
-            transition: { duration: 30, ease: 'linear', repeat: Infinity },
-        });
+        setIsPaused(false);
+        const container = containerRef.current;
+        if (container) {
+            // Resume scrolling animation from the current scroll position
+            controls.start({
+                x: [`-${container.scrollLeft}px`, `-${container.scrollWidth - container.clientWidth}px`],
+                transition: { duration: 30, ease: 'linear', repeat: Infinity },
+            });
+        }
     };
 
+    // Initialize the scrolling animation
+    useEffect(() => {
+        const container = containerRef.current;
+        if (container) {
+            controls.start({
+                x: [`-${container.scrollLeft}px`, `-${container.scrollWidth - container.clientWidth}px`],
+                transition: { duration: 30, ease: 'linear', repeat: Infinity },
+            });
+        }
+    }, [controls]);
+
     return (
-        <div className='py-10 bg-gray-100'>
+        <div className='py-10 m-auto bg-gray-100'>
             <h1 className='text-orange-500 font-bold text-3xl text-center mb-4'>Customer Reviews</h1>
-            <div className='relative overflow-hidden'>
+            <div className='relative'>
                 <motion.div
                     ref={containerRef}
                     className='flex space-x-6'
                     animate={controls}
-                    initial={{ x: '0%' }}
                 >
                     {reviewsData.map((review, index) => (
                         <motion.div
                             key={review.id}
                             className='flex-none w-80 bg-white rounded-lg shadow-xl overflow-hidden transition-transform duration-300'
                             whileHover={{ scale: 1.05, zIndex: 10 }}
-                            onMouseEnter={() => handleMouseEnter(index)}
+                            onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
-                            style={{
-                                transform: hoveredIndex === index ? 'scale(1.05)' : 'scale(1)',
-                                zIndex: hoveredIndex === index ? 10 : 'auto',
-                            }}
                         >
-                            <div className='m-auto py-2 px-4'>
+                            <div className='m-auto  py-2 px-4'>
                                 <div className='flex justify-between items-center p-2'>
                                     <img
-                                        className=' w-16 h-16 rounded-full border-4 border-orange-500 object-cover'
+                                        className='w-16 h-16 rounded-full border-4 border-orange-500 object-cover'
                                         src={review.avatar}
                                         alt={review.name}
                                     />
@@ -80,7 +69,6 @@ const Reviews = () => {
                                 </div>
                                 <p className='text-gray-800 my-2 text-xl'>{review.review}</p>
                                 <span className='text-gray-500 text-xs'>{review.date}</span>
-
                             </div>
                         </motion.div>
                     ))}
